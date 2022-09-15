@@ -253,7 +253,49 @@ export const accessChat = (userId)=> async(dispatch)=>{
 
 export const selectChat = (data)=> async(dispatch)=>{
       dispatch({
-        type: actionTypes.ACCESSED_CHAT,
+        type: actionTypes.SELECT_CHAT,
         payload: data,
       });
     }
+
+
+export const createGroupChat = (groupChatName, selectedUsers)=> async(dispatch)=>{
+  try {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    
+    const { data } = await axios.post(`/api/chat/group`, 
+    {
+      name: groupChatName,
+      users: JSON.stringify(selectedUsers.map((u) => u._id)),
+    },
+    config);
+    console.log(data)
+    if(data){
+      toast.success("Group created Successfully.");
+      dispatch({
+        type: actionTypes.ADD_GROUP_CHAT,
+        payload: data,
+      });
+    }
+
+    } catch (error) {
+      if (error.response) {
+
+        console.log(error.response.data.message);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        console.log(error.request);
+      } else {
+        console.log('Error', error.message);
+      }
+      console.log(error.config);
+      toast.error(error.response.data.message);
+    }
+}

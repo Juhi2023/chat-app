@@ -5,7 +5,7 @@ import { Avatar, Card, CardActions, CardContent, CardMedia, Chip, CircularProgre
 import { Box } from '@mui/system';
 import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
-import { searchUser } from '../store/Action/action';
+import { searchUser, createGroupChat } from '../store/Action/action';
 
 
 const style = {
@@ -24,11 +24,14 @@ function GroupModal(props) {
   const {handleClose, open} = props;
   const [values, setValues]= React.useState({name:'', query:'', users:[]})
   let [loading, setLoading] = React.useState(false)
-  const submitHandler = ()=>{
+  const submitHandler = (users)=>{
     if(values.name === ''){
         toast.warn("Please Enter the Group Name!")
-    }else if(values.users.length === 0){
-        toast.warn("Select atleast one User!")
+    }else if(values.users.length <= 1){
+        toast.warn("Select atleast two User!")
+    }else{
+        props.createGroupChat(values.name, values.users);
+        handleClose();
     }
   }
   
@@ -108,7 +111,7 @@ function GroupModal(props) {
                 <div className="text-center">
                     {(loading && !props.searchedUsers) && <CircularProgress color="inherit" />}
                 </div>
-                {props.searchedUsers && 
+                {loading && props.searchedUsers && 
                 <>
                     <Stack spacing={1} sx={{alignItems: 'center', height: 'calc(100% - 100px)'}} className="overflowY-scroll" >
                     {
@@ -139,7 +142,7 @@ function GroupModal(props) {
                 <Button size="small" color="primary" variant="outlined"  onClick={submitHandler}>
                     Create
                 </Button>
-                <Button size="small" color="primary" variant="outlined" sx={{color:'gray', borderColor: 'gray'}} onClick={handleClose}>
+                <Button size="small" color="primary" variant="outlined" sx={{color:'gray', borderColor: 'gray'}} onClick={()=>{handleClose(); setLoading(false); setValues({name:'', query:'', users:[]})}}>
                     Close
                 </Button>
             </CardActions>
@@ -158,6 +161,6 @@ const mapStateToProps = ({ reducer }) => {
     };
   };
   export default(
-    connect(mapStateToProps, {searchUser})(GroupModal)
+    connect(mapStateToProps, {searchUser, createGroupChat})(GroupModal)
   );
   

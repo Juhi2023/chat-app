@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import SearchIcon from '@mui/icons-material/Search';
 import { Avatar, IconButton, InputBase, Skeleton, Stack, Tooltip } from '@mui/material';
 import { toast } from 'react-toastify';
-import { searchUser, accessChat, fetchChats} from '../store/Action/action';
+import { searchUser, accessChat} from '../store/Action/action';
 import { connect } from 'react-redux';
 import { useEffect } from 'react';
 
@@ -131,6 +131,6 @@ const mapStateToProps = ({ reducer }) => {
     };
   };
   export default(
-    connect(mapStateToProps, {searchUser, accessChat, fetchChats})(SideSearchBar)
+    connect(mapStateToProps, {searchUser, accessChat})(SideSearchBar)
   );
   

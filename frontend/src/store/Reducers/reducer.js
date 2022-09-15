@@ -42,11 +42,24 @@ const reducer = (state = initialState, action) => {
             accessedChat: action.payload,
             myChats: [action.payload, ...state.myChats]
           };
+        
+        case actionTypes.SELECT_CHAT:
+          return {
+            ...state,
+            accessedChat: action.payload,
+          };
 
         case actionTypes.GET_USERS:
         return {
           ...state,
           getUsers: action.payload,
+        };
+        
+        case actionTypes.ADD_GROUP_CHAT:
+        return {
+          ...state,
+          accessedChat: action.payload,
+          myChats: [action.payload, ...state.myChats]
         };
         
         default: return state;
