@@ -25,7 +25,7 @@ function Header(props) {
   const handleModalClose = () => setOpen(false);
 
   return (
-    <div className="bg-light position-fixed w-100" style={{top:0}}>
+    <div className="bg-light position-fixed w-100 shadow-sm" style={{top:0}}>
       <div className='mx-md-5 mx-3'>
       <div className='d-flex justify-content-between py-2 align-items-center'>
         <div className='fw-bolder fs-4'>

@@ -32,7 +32,7 @@ export default function ProfileModal(props) {
           <Card sx={{ maxWidth: 345 }}>
               <CardMedia
                 component="img"
-                image={userInfo.pic ? userInfo.pic : "http://res.cloudinary.com/photostore/image/upload/v1663055978/w7w5ygflpen94mqkjmrp.png"}
+                image={userInfo.pic ? userInfo.pic : "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"}
                 alt="green iguana"
               />
               <CardContent>

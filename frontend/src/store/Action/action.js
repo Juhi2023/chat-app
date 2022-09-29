@@ -299,3 +299,169 @@ export const createGroupChat = (groupChatName, selectedUsers)=> async(dispatch)=
       toast.error(error.response.data.message);
     }
 }
+
+
+export const updateGroup = (id, groupName)=> async(dispatch)=>{
+  try {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    
+    const { data } = await axios.put(`/api/chat/rename`, 
+    {
+      chatId: id,
+      chatName: groupName
+    },
+    config);
+
+    if(data){
+      toast.success("Group renamed Successfully.");
+      dispatch({
+        type: actionTypes.ACCESSED_CHAT,
+        payload: data,
+      });
+    }
+
+    } catch (error) {
+      if (error.response) {
+
+        console.log(error.response.data.message);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        console.log(error.request);
+      } else {
+        console.log('Error', error.message);
+      }
+      console.log(error.config);
+      toast.error(error.response.data.message);
+    }
+}
+
+export const addUserInGroup = (userId, chatId)=> async(dispatch)=>{
+  try {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    
+    const { data } = await axios.put(`/api/chat/groupadd`, 
+    {
+      chatId: chatId,
+      userId: userId
+    },
+    config);
+
+    if(data){
+      toast.success("User Added Successfully.");
+      dispatch({
+        type: actionTypes.ACCESSED_CHAT,
+        payload: data,
+      });
+    }
+
+    } catch (error) {
+      if (error.response) {
+
+        console.log(error.response.data.message);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        console.log(error.request);
+      } else {
+        console.log('Error', error.message);
+      }
+      console.log(error.config);
+      toast.error(error.response.data.message);
+    }
+}
+
+export const removeFromGroup = (userId, chatId)=> async(dispatch)=>{
+  try {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    
+    const { data } = await axios.put(`/api/chat/groupremove`, 
+    {
+      chatId: chatId,
+      userId: userId
+    },
+    config);
+
+    if(data){
+      toast.success("User removed Successfully.");
+      dispatch({
+        type: actionTypes.ACCESSED_CHAT,
+        payload: data,
+      });
+    }
+
+    } catch (error) {
+      if (error.response) {
+
+        console.log(error.response.data.message);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        console.log(error.request);
+      } else {
+        console.log('Error', error.message);
+      }
+      console.log(error.config);
+      toast.error(error.response.data.message);
+    }
+}
+
+
+export const sendMessage = (content, chatId)=> async(dispatch)=>{
+  try {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    
+    const { data } = await axios.post(`/api/message`, 
+    {
+      chatId: chatId,
+      content: content
+    },
+    config);
+
+    if(data){
+      toast.success("User removed Successfully.");
+      dispatch({
+        type: actionTypes.ACCESSED_CHAT,
+        payload: data,
+      });
+    }
+
+    } catch (error) {
+      if (error.response) {
+
+        console.log(error.response.data.message);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        console.log(error.request);
+      } else {
+        console.log('Error', error.message);
+      }
+      console.log(error.config);
+      toast.error(error.response.data.message);
+    }
+}
