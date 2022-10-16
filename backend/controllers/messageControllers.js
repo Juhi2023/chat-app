@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Message = require("../models/messageModel");
 const User = require("../models/userModel")
-
+const Chat =require('../models/chatModel')
 
 //@description     send message
 //@route           POST /api/message
@@ -29,7 +29,7 @@ const sendMessage = asyncHandler(async (req, res) => {
             select: "name pic email"
         })
 
-        await CHat.findByIdAndUpdate(chatId, {
+        await Chat.findByIdAndUpdate(chatId, {
             latestMessage: message
         })
 

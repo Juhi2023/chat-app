@@ -6,7 +6,8 @@ const initialState = {
     searchedUsers: null,
     myChats: [],
     accessedChat: null,
-    getUsers: null
+    getUsers: null,
+    allMessages: []
 }
 
 const reducer = (state = initialState, action) => {
@@ -60,6 +61,18 @@ const reducer = (state = initialState, action) => {
           ...state,
           accessedChat: action.payload,
           myChats: [action.payload, ...state.myChats]
+        };
+
+        case actionTypes.SET_ALL_MESSAGES:
+        return {
+          ...state,
+          allMessages: action.payload,
+        };
+
+        case actionTypes.ADD_NEW_MESSAGE:
+        return {
+          ...state,
+          allMessages: [...state.allMessages, action.payload],
         };
         
         default: return state;

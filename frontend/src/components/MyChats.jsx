@@ -49,7 +49,7 @@ function MyChats(props) {
                                       <div className='fw-bold text-capitalize name' style={{color:'#192A53'}}>
                                       {!elem.isGroupChat ? getSender(props.userInfo, elem.users).name : elem.chatName}
                                       </div>
-                                      <div className='text-lowercase  email' style={{color:'gray', fontSize:'12px'}}>hiiiiiiiiiiiiiii{elem.latestMessage}</div>
+                                      <div className='text-lowercase  email' style={{color:'gray', fontSize:'12px'}}>hiiiiiiiiiiiiiii</div>
                                   </div>
                                 </div>
                             </Box>

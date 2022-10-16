@@ -425,12 +425,13 @@ export const removeFromGroup = (userId, chatId)=> async(dispatch)=>{
 }
 
 
-export const sendMessage = (content, chatId)=> async(dispatch)=>{
+export const sendMessage = (content, chatId, socket)=> async(dispatch)=>{
   try {
+    console.log("send message")
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-
     const config = {
       headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
@@ -443,9 +444,44 @@ export const sendMessage = (content, chatId)=> async(dispatch)=>{
     config);
 
     if(data){
-      toast.success("User removed Successfully.");
       dispatch({
-        type: actionTypes.ACCESSED_CHAT,
+        type: actionTypes.ADD_NEW_MESSAGE,
+        payload: data,
+      });
+      socket.emit("new message", data)
+    }
+
+    } catch (error) {
+      if (error.response) {
+
+        console.log(error.response.data.message);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        console.log(error.request);
+      } else {
+        console.log('Error', error.message);
+      }
+      console.log(error.config);
+      toast.error(error.response.data.message);
+    }
+}
+
+export const getAllMessages = ( chatId)=> async(dispatch)=>{
+  try {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    
+    const { data } = await axios.get(`/api/message/${chatId}`,
+    config);
+
+    if(data){
+      dispatch({
+        type: actionTypes.SET_ALL_MESSAGES,
         payload: data,
       });
     }
@@ -464,4 +500,11 @@ export const sendMessage = (content, chatId)=> async(dispatch)=>{
       console.log(error.config);
       toast.error(error.response.data.message);
     }
+}
+
+export const setMessages = ( messages)=> async(dispatch)=>{
+  dispatch({
+    type: actionTypes.ADD_NEW_MESSAGE,
+    payload: messages,
+  });
 }
