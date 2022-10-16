@@ -12,7 +12,7 @@ import io from "socket.io-client";
 import { useState } from 'react';
 import typingGif from '../assets/typing.gif'
 
-const ENDPOINT ="http://localhost:5000";
+const ENDPOINT ="https://talks-up.herokuapp.com/";
 var socket, selectedChatCompare;
 
 function ChatBox(props) {
