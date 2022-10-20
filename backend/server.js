@@ -8,7 +8,7 @@ const messageRoutes = require('./routes/messageRoutes')
 const { notFound, errorHandler } = require("./middlewares/errorMiddleware");
 const path = require("path");
 
-dotenv.config();
+dotenv.config({path: '../.env'});
 connectDB(process.env.MONGO_URI);
 const app = express();
 app.use(express.json()); // to accept json data
@@ -31,7 +31,7 @@ if(process.env.NODE_ENV==="production"){
     })
 }else{
     app.get('/', (req, res)=>{
-        res.send('API is running')
+        res.send('API is runninggggggg')
     })
 }
 /*--------------------------------Deployment---------------------------------- */
