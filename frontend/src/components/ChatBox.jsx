@@ -1,5 +1,5 @@
 import { Avatar, IconButton, Tooltip } from '@mui/material'
-import React from 'react'
+import React, { useRef } from 'react'
 import ViewCompactIcon from '@mui/icons-material/ViewCompact';
 import SendIcon from '@mui/icons-material/Send';
 import GroupModal from './GroupModal';
@@ -25,6 +25,7 @@ function ChatBox(props) {
   const[socketConnection, setSocketConnection] = useState(false)
   const [typing, setTyping] = useState(false)
   const [isTyping, setIsTyping] = useState(false)
+  const bottomRef = useRef(null);
 
   const typingHandler = (e)=>{
     setMessage(e.target.value);
@@ -94,13 +95,17 @@ function ChatBox(props) {
       socket.off("message recieved")
     })
   });
+  
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ block: 'nearest', inline: 'start' });
+  }, [props.allMessages]);
 
   return (
     <div className='h-100 w-75 shadow-sm' style={{backgroundColor: '#e0dfdf'}}>
     {
         props.accessedChat ? 
         <>
-          <div className='bg-light d-flex justify-content-between fw-bold'>
+          <div className='bg-light d-flex justify-content-between align-items-center fw-bold'>
             <div className='mx-5' style={{color: '#FF4F5A', textTransform: 'capitalize', fontSize: '20px'}}>
               {
                 props.accessedChat.isGroupChat ?
@@ -149,7 +154,7 @@ function ChatBox(props) {
                 )
               })
             }
-
+            <div className='mt-2 d-flex' style={{justifyContent: 'left'}}  ref={bottomRef} />
             </div>
           </div>
           <div style={{height: '25px'}}>
