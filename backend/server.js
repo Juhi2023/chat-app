@@ -8,7 +8,7 @@ const messageRoutes = require('./routes/messageRoutes')
 const { notFound, errorHandler } = require("./middlewares/errorMiddleware");
 const path = require("path");
 
-dotenv.config({path: '../.env'});
+dotenv.config();
 connectDB(process.env.MONGO_URI);
 const app = express();
 app.use(express.json()); // to accept json data
@@ -25,9 +25,9 @@ app.use('/api/message', messageRoutes)
 /*--------------------------------Deployment---------------------------------- */
 const __dirname1 = path.resolve();
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname1, "../frontend/build")));
+  app.use(express.static(path.join(__dirname1, "/frontend/build")));
   app.get("*", (req, res) =>
-    res.sendFile(path.resolve(__dirname1, "../frontend", "build", "index.html"))
+    res.sendFile(path.resolve(__dirname1, "frontend", "build", "index.html"))
   );
 } else {
   app.get("/", (req, res) => {
