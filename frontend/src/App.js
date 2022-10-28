@@ -23,8 +23,8 @@ function App() {
           pauseOnHover
           />
       <Routes>
-        <Route path='/' element={<Home/>}/>
-        <Route path='/chats' element={<ChatPage/>}/>
+        <Route exact path="/" element={<Home/>}/>
+        <Route exact path="chats" element={<ChatPage/>}/>
       </Routes>
     </div>
   );
