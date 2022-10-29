@@ -18,7 +18,7 @@ function MyChats(props) {
 
 
   return (
-    <div className='h-100 rounded shadow-sm' style={{borderRight: 0, width:'35%'}}>
+    <div className='h-100 rounded shadow-sm' style={{borderRight: 0, width:(props.screenSize<768)?"100%":"30%", display:(props.screenSize<768)? (props.accessedChat && props.accessedChat !== undefined ? "none": "block"):"block"}}>
       <div className='d-flex justify-content-between m-3'>
         <div style={{color: '#192A53', fontWeight: 700}}>My Chats</div>
         <div>
@@ -34,7 +34,7 @@ function MyChats(props) {
             <AddGroupModal handleClose={handleModalClose} open={modalOpen} userInfo={props.userInfo}/>
         </div>
       </div>
-      <div style={{alignItems: 'center', height: 'calc(100% - 60px)'}} className="p-0 overflow-scroll" >
+      <div style={{alignItems: 'center', height: 'calc(100% - 60px)'}} className="p-0 overflow-scroll">
                {
                 props.myChats && props.myChats.map((elem, index)=>{
                         return (
@@ -49,7 +49,10 @@ function MyChats(props) {
                                       <div className='fw-bold text-capitalize name' style={{color:'#192A53'}}>
                                       {!elem.isGroupChat ? getSender(props.userInfo, elem.users).name : elem.chatName}
                                       </div>
-                                      <div className='text-lowercase  email' style={{color:'gray', fontSize:'12px'}}>hiiiiiiiiiiiiiii</div>
+                                      <div className='text-lowercase  email' style={{color:'gray', fontSize:'12px'}}>
+                                        {elem.latestMessage && elem.latestMessage!== undefined? elem.latestMessage.content.slice(0, 24): ""} 
+                                        {elem.latestMessage && elem.latestMessage!== undefined && elem.latestMessage.content.length>23 && <> . . . </>}
+                                      </div>
                                   </div>
                                 </div>
                             </Box>
@@ -65,6 +68,8 @@ const mapStateToProps = ({ reducer }) => {
   return {
     userInfo: reducer.userInfo,
     myChats: reducer.myChats,
+    screenSize: reducer.screenSize,
+    accessedChat: reducer.accessedChat,
   };
 };
 export default(

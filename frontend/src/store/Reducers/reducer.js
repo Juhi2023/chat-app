@@ -1,18 +1,25 @@
 import * as actionTypes from '../constants';
 
 const initialState = {
-    chats: [],
-    userInfo: JSON.parse(localStorage.getItem("userInfo")) || null,
-    searchedUsers: null,
-    myChats: [],
-    accessedChat: null,
-    getUsers: null,
-    allMessages: []
+  screenSize:null,
+  chats: [],
+  userInfo: JSON.parse(localStorage.getItem("userInfo")) || null,
+  searchedUsers: null,
+  myChats: [],
+  accessedChat: null,
+  getUsers: null,
+  allMessages: [],
+  notifications: []
 }
 
 const reducer = (state = initialState, action) => {
   
     switch (action.type) {
+      case actionTypes.GET_WINDOW_SIZE:
+        return {
+          ...state,
+          screenSize: action.payload,
+        };
       case actionTypes.SET_CHATS:
         return {
           ...state,

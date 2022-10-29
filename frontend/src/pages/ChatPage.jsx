@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux';
-import { fetchChats } from '../store/Action/action';
+import { fetchChats ,getWindowSize} from '../store/Action/action';
 import {useNavigate} from 'react-router-dom'
 import Header from '../components/Header';
 import MyChats from '../components/MyChats';
@@ -18,11 +18,18 @@ function ChatPage(props) {
     }
   }, [navigate, props.userInfo]);
     
+  useEffect(()=>{
+    window.addEventListener('resize', ()=>{props.getWindowSize(window.innerWidth)})
+    props.getWindowSize(window.innerWidth)
+
+    return ()=> window.removeEventListener('resize', ()=>{props.getWindowSize(window.innerWidth)});
+  },[props.screenSize])
+
 
   return (
     <div className='overflow-hidden '>
       <Header/>
-      <div className='bg-light rounded d-flex shadow' style={{margin: '58px 0 0 0', height: 'calc(100vh - 60px)'}}>
+      <div className='bg-light rounded d-flex shadow ' style={{margin: '53px 0 0 0', height: 'calc(100vh - 50px)'}}>
         <MyChats/>
         <ChatBox/>
       </div>
@@ -35,10 +42,11 @@ const mapStateToProps = ({ reducer }) => {
   return {
     userInfo: reducer.userInfo,
     chats: reducer.chats,
+    screenSize: reducer.screenSize
   };
 };
 export default(
-  connect(mapStateToProps, {fetchChats})(ChatPage)
+  connect(mapStateToProps, {fetchChats,getWindowSize})(ChatPage)
 );
 
 

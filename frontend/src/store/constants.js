@@ -8,3 +8,5 @@ export const ADD_GROUP_CHAT = 'ADD_GROUP_CHAT'
 export const SELECT_CHAT = 'SELECT_CHAT'
 export const SET_ALL_MESSAGES = 'SET_ALL_MESSAGES'
 export const ADD_NEW_MESSAGE = 'ADD_NEW_MESSAGE'
+export const GET_WINDOW_SIZE = 'GET_WINDOW_SIZE'
+

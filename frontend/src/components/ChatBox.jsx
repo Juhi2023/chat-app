@@ -5,7 +5,7 @@ import SendIcon from '@mui/icons-material/Send';
 import GroupModal from './GroupModal';
 import { connect } from 'react-redux';
 import ProfileModal from './ProfileModal';
-import { sendMessage, getAllMessages, setMessages} from '../store/Action/action';
+import { sendMessage, getAllMessages, setMessages, fetchChats} from '../store/Action/action';
 import { isLatestMessage, isSameSender } from '../config/ChatLogic';
 import { useEffect } from 'react';
 import io from "socket.io-client";
@@ -57,6 +57,7 @@ function ChatBox(props) {
       props.sendMessage(message, props.accessedChat._id, socket)
       socket.emit("stop typing", props.accessedChat._id);
         setTyping(false);
+        props.fetchChats()
     }
   }
 
@@ -79,14 +80,12 @@ function ChatBox(props) {
   },[props.accessedChat])
 
   useEffect(() => {
-    console.log('hii')
     socket.on("message recieved", (newMessageRecieved) => {
       if (
         !selectedChatCompare || // if chat is not selected or doesn't match current chat
         selectedChatCompare._id !== newMessageRecieved.chat._id
       ) {
       } else {
-        console.log(newMessageRecieved)
         props.setMessages(newMessageRecieved)
       }
     });
@@ -98,10 +97,12 @@ function ChatBox(props) {
   
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ block: 'nearest', inline: 'start' });
+    props.fetchChats()
+
   }, [props.allMessages]);
 
   return (
-    <div className='h-100 w-75 shadow-sm' style={{backgroundColor: '#e0dfdf'}}>
+    <div className='h-100 shadow-sm' style={{backgroundColor: '#e0dfdf', width:(props.screenSize<768)?"100%":"70%", display:(props.screenSize<768)? (props.accessedChat && props.accessedChat !== undefined ? "block": "none"):"block"}}>
     {
         props.accessedChat ? 
         <>
@@ -126,11 +127,12 @@ function ChatBox(props) {
             </IconButton>
           </div>
 
-          <div style={{height: 'calc(100% - 155px)', overflowY: 'scroll', overflowX: 'hidden'}}>
+          <div style={{height: 'calc(100% - 140px)', overflowY: 'scroll', overflowX: 'hidden'}}>
             <div className='m-3'>
             {
               props.allMessages &&
               props.allMessages.map((m, i)=>{
+                console.log(m)
                 return (
                   <div className='mt-2 d-flex' style={{justifyContent: m.sender._id=== props.userInfo._id ? 'right': 'left'}} key={i}>
                     {
@@ -148,6 +150,12 @@ function ChatBox(props) {
                     <span className='p-2  rounded-1' style={{backgroundColor: m.sender._id=== props.userInfo._id ? '#FF4F5A': '#FFB753',
                       color: m.sender._id=== props.userInfo._id ? 'white': 'black',
                       marginLeft:(isSameSender(props.allMessages, m, i, props.userInfo._id) || isLatestMessage(props.allMessages, i, props.userInfo._id)) ? '0px': '50px'}}>
+                      {
+                        m.chat.isGroupChat && <>
+                        <span className='fs-6 fw-bold'>{m.sender._id=== props.userInfo._id ? "You" :m.sender.name}</span>
+                        <br/>
+                        </>
+                      }
                       {m.content}
                     </span>
                   </div>
@@ -162,12 +170,12 @@ function ChatBox(props) {
           </div>
           
 
-          <div className='shadow-sm bg-white d-flex  justify-content-between align-items-center'>
-            <input type="text" className='p-4 w-100' style={{border: 'none', 'outline': 'none'}} placeholder='Write Message...' 
+          <div className='shadow-sm bg-white d-flex  justify-content-between '>
+            <input type="text" className='px-4 pt-3 pb-5 w-100' style={{border: 'none', 'outline': 'none'}} placeholder='Write Message...' 
               value={message} 
               onChange={typingHandler}
             />
-            <div className='px-4' style={{cursor: 'pointer'}} onClick={sendMessage}>
+            <div className='p-3 px-4' style={{cursor: 'pointer'}} onClick={sendMessage}>
               <SendIcon/>
             </div>
           </div>
@@ -188,9 +196,10 @@ const mapStateToProps = ({ reducer }) => {
   return {
     userInfo: reducer.userInfo,
     accessedChat: reducer.accessedChat,
-    allMessages: reducer.allMessages
+    allMessages: reducer.allMessages,
+    screenSize: reducer.screenSize
   };
 };
 export default(
-  connect(mapStateToProps, {sendMessage, getAllMessages, setMessages})(ChatBox)
+  connect(mapStateToProps, {sendMessage, getAllMessages, setMessages, fetchChats})(ChatBox)
 );

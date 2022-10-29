@@ -2,6 +2,13 @@ import * as actionTypes from '../constants';
 import { toast } from 'react-toastify';
 import axios from 'axios'
 
+export const getWindowSize = (size) => (dispatch) =>{
+  dispatch({
+    type: actionTypes.GET_WINDOW_SIZE,
+    payload: size,
+  });
+}
+
 export const signupUser = (name, email, password, pic)=> async(dispatch)=>{
   try {
       const config = {
@@ -191,7 +198,6 @@ export const fetchChats = ()=> async(dispatch)=>{
     };
 
     const { data } = await axios.get("/api/chat", config);
-    console.log(data)
     if(data){
       dispatch({
         type: actionTypes.MY_CHATS,
