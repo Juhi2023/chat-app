@@ -5,12 +5,13 @@ import SendIcon from '@mui/icons-material/Send';
 import GroupModal from './GroupModal';
 import { connect } from 'react-redux';
 import ProfileModal from './ProfileModal';
-import { sendMessage, getAllMessages, setMessages, fetchChats} from '../store/Action/action';
+import { sendMessage, getAllMessages, setMessages, fetchChats, selectChat} from '../store/Action/action';
 import { isLatestMessage, isSameSender } from '../config/ChatLogic';
 import { useEffect } from 'react';
 import io from "socket.io-client";
 import { useState } from 'react';
 import typingGif from '../assets/typing.gif'
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 const ENDPOINT ="https://talks-up.herokuapp.com/";
 var socket, selectedChatCompare;
@@ -107,7 +108,10 @@ function ChatBox(props) {
         props.accessedChat ? 
         <>
           <div className='bg-light d-flex justify-content-between align-items-center fw-bold'>
-            <div className='mx-5' style={{color: '#FF4F5A', textTransform: 'capitalize', fontSize: '20px'}}>
+            <div className='mx-lg-5' style={{color: '#FF4F5A', textTransform: 'capitalize', fontSize: '20px'}}>
+            {props.screenSize<768 &&<div className="d-inline ms-2 me-3" onClick={()=>{props.selectChat(null)}}>
+                <ArrowBackIosNewIcon/>
+              </div>}
               {
                 props.accessedChat.isGroupChat ?
                 props.accessedChat.chatName:
@@ -201,5 +205,5 @@ const mapStateToProps = ({ reducer }) => {
   };
 };
 export default(
-  connect(mapStateToProps, {sendMessage, getAllMessages, setMessages, fetchChats})(ChatBox)
+  connect(mapStateToProps, {sendMessage, getAllMessages, setMessages, fetchChats, selectChat})(ChatBox)
 );
