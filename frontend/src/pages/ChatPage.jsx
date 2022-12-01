@@ -29,7 +29,7 @@ function ChatPage(props) {
   return (
     <div className='overflow-hidden'>
       <Header/>
-      <div className='bg-light rounded d-flex shadow ' style={{margin: '53px 0 0 0', height: 'calc(100vh - 60px)'}}>
+      <div className='bg-light rounded d-flex shadow ' style={{margin: '53px 0 0 0', height: 'calc(100vh - 55px)'}}>
         <MyChats/>
         <ChatBox/>
       </div>
